@@ -8,8 +8,12 @@ export default function AddMedicationModal({ onClose, onAdd }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!name) return;
-        onAdd(name, Number(interval), category);
-        onClose();
+        try {
+            onAdd(name, Number(interval), category);
+            onClose();
+        } catch (err) {
+            alert('Error adding medication: ' + err.message);
+        }
     };
 
     const categories = ['解熱鎮痛剤', '胃腸薬', '整腸剤', '風邪薬', 'アレルギー薬', 'サプリメント', 'その他'];
@@ -22,7 +26,7 @@ export default function AddMedicationModal({ onClose, onAdd }) {
                     <button className="close-btn" onClick={onClose}>×</button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="add-med-form">
+                <div className="add-med-form">
                     <div className="form-group">
                         <label>薬の名前</label>
                         <input
@@ -56,8 +60,8 @@ export default function AddMedicationModal({ onClose, onAdd }) {
                         />
                     </div>
 
-                    <button type="submit" className="submit-btn">追加する</button>
-                </form>
+                    <button type="button" className="submit-btn" onClick={handleSubmit}>追加する</button>
+                </div>
             </div>
         </div>
     );

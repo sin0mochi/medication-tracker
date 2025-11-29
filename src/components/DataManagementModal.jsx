@@ -22,35 +22,7 @@ export default function DataManagementModal({ isOpen, onClose, onClearHistory, r
 
                 <div className="modal-body">
                     <section className="data-section">
-                        <h3>🎨 デザイン設定</h3>
-                        <div className="theme-selection">
-                            <label className="theme-option">
-                                <input
-                                    type="radio"
-                                    name="theme"
-                                    value="dark"
-                                    checked={currentTheme === 'dark'}
-                                    onChange={(e) => onThemeChange(e.target.value)}
-                                />
-                                <div className="theme-card">
-                                    <span className="theme-preview">🌙</span>
-                                    <span>ダーク</span>
-                                </div>
-                            </label>
-                            <label className="theme-option">
-                                <input
-                                    type="radio"
-                                    name="theme"
-                                    value="warm"
-                                    checked={currentTheme === 'warm'}
-                                    onChange={(e) => onThemeChange(e.target.value)}
-                                />
-                                <div className="theme-card">
-                                    <span className="theme-preview">✏️</span>
-                                    <span>手書き</span>
-                                </div>
-                            </label>
-                        </div>
+                        {/* Theme selection moved to header */}
                     </section>
 
                     <hr className="divider" />

@@ -25,11 +25,11 @@ export default function HistoryList({ history, medications, onRemove }) {
                             </span>
                         </div>
                         <button
-                            className="delete-btn"
+                            className="delete-history-icon-btn"
                             onClick={() => onRemove(entry.id)}
                             aria-label="削除"
                         >
-                            ×
+                            🗑️
                         </button>
                     </li>
                 ))}

@@ -122,6 +122,20 @@ export function useMedicationHistory() {
         return history.filter(h => h.medicationId === medicationId);
     };
 
+    const getLastDoseForCategory = (category) => {
+        // Find all medications in this category
+        const categoryMedIds = medications
+            .filter(m => m.category === category)
+            .map(m => m.id);
+
+        // Find the most recent history entry for any of these medications
+        const categoryHistory = history
+            .filter(h => categoryMedIds.includes(h.medicationId))
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        return categoryHistory.length > 0 ? categoryHistory[0] : null;
+    };
+
     const addMedication = (name, intervalHours, category = 'その他') => {
         const newMed = {
             id: Date.now().toString(),
@@ -201,6 +215,7 @@ export function useMedicationHistory() {
         removeDose,
         getLastDose,
         getHistoryForMedication,
+        getLastDoseForCategory,
         addMedication,
         removeMedication,
         resetDoseCount,

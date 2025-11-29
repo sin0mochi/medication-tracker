@@ -14,6 +14,7 @@ function App() {
     addDose,
     removeDose,
     getLastDose,
+    getLastDoseForCategory,
     getHistoryForMedication,
     addMedication,
     removeMedication,
@@ -52,6 +53,14 @@ function App() {
           </button>
           <button
             className="header-icon-btn"
+            onClick={() => setTheme(theme === 'dark' ? 'warm' : 'dark')}
+            title="テーマ切り替え"
+            style={{ fontSize: '1.2rem' }}
+          >
+            {theme === 'dark' ? '🌙' : '✏️'}
+          </button>
+          <button
+            className="header-icon-btn"
             onClick={() => setShowDataModal(true)}
             title="設定"
             style={{ fontSize: '1.2rem' }}
@@ -68,6 +77,7 @@ function App() {
               key={med.id}
               medication={med}
               lastDose={getLastDose(med.id)}
+              lastCategoryDose={getLastDoseForCategory(med.category)}
               onRecord={addDose}
               onReset={resetDoseCount}
               onDelete={removeMedication}
