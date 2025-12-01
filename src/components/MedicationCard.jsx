@@ -163,8 +163,8 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
 
     // Determine tape pattern (deterministic based on ID)
     const tapePattern = useMemo(() => {
-        const patterns = ['tape-dot', 'tape-check', 'tape-stripe', '']; // '' for plain
-        if (!medication.id) return '';
+        const patterns = ['tape-dot', 'tape-check', 'tape-stripe']; // No plain option
+        if (!medication.id) return 'tape-dot';
         const hash = medication.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
         return patterns[hash % patterns.length];
     }, [medication.id]);
