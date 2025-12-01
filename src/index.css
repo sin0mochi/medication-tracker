@@ -190,11 +190,11 @@ body {
 }
 
 #root {
-  width: 100%;
+  width: 90%;
+  /* Adjusted to 90% as requested */
   max-width: 600px;
-  /* Mobile first, but slightly wider */
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0.5rem;
   box-sizing: border-box;
 }
 
