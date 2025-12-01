@@ -406,8 +406,8 @@ h2 {
 .card-body-new {
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
-  /* Stretch items to match height */
+  align-items: center;
+  /* Align items vertically center */
   margin-bottom: 0.5rem;
   /* Add small spacing as requested */
 }
@@ -422,54 +422,47 @@ h2 {
   /* Allow it to take available space */
 }
 
-.status-row-single-line {
+.status-col {
   display: flex;
-  align-items: flex-end;
-  /* Align items to bottom (下付け) */
-  flex-wrap: wrap;
-  /* Allow wrapping if absolutely necessary, but try to keep on one line */
-  gap: 0.3rem;
-  /* min-height removed to minimize spacing */
+  flex-direction: column;
+  align-items: flex-start;
+  /* Align to left */
+  gap: 0.1rem;
 }
 
 .timer-display {
   display: flex;
-  align-items: flex-end;
-  /* Align timer icon/text to bottom */
+  align-items: center;
   gap: 0.25rem;
-  font-size: 2.4rem;
-  /* Further Increased for Timer */
+  font-size: 2.0rem;
+  /* Adjusted for stacked layout */
   font-weight: bold;
   color: var(--md-sys-color-on-surface);
-  line-height: 1;
+  line-height: 1.1;
 }
 
 .status-text-large {
-  font-size: 1.4rem;
-  /* Reduced from 1.8rem */
+  font-size: 1.8rem;
+  /* Large font for "服用可能" */
   letter-spacing: 0;
-  /* Reset spacing */
   white-space: nowrap;
   font-weight: bold;
-  line-height: 1;
-  /* Adjust line height */
+  line-height: 1.1;
 }
 
 .timer-icon {
   font-size: 1.4rem;
-  /* Reduced icon size */
-  margin-bottom: 0.3rem;
-  /* Adjust icon vertical position relative to text */
+  margin-bottom: 0;
 }
 
 .next-dose-info {
-  font-size: 0.85rem;
+  font-size: 1.0rem;
+  /* Smaller font for time */
   color: var(--md-sys-color-on-surface-variant);
   white-space: nowrap;
-  margin-left: 0.2rem;
-  /* Small gap */
-  margin-bottom: 0.2rem;
-  /* Lift slightly from absolute bottom if needed, or keep 0 */
+  margin-left: 0;
+  /* Reset margin */
+  margin-bottom: 0;
 }
 
 .body-right {
@@ -630,17 +623,20 @@ h2 {
 }
 
 .category-badge {
-  font-size: 0.75rem;
-  padding: 0.1rem 0.4rem;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.5rem;
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   border-radius: 4px;
   white-space: nowrap;
-  flex-shrink: 1;
+  flex-shrink: 0;
+  /* Don't shrink */
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 0;
-  max-width: 100px;
+  max-width: 120px;
+  align-self: center;
+  /* Center vertically in the body */
 }
 
 /* Header Actions */

@@ -188,10 +188,10 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
                     )}
                 </div>
 
-                {/* Middle: Timer/Next Dose (Left) and Category (Moved to same line) */}
+                {/* Middle: Timer/Next Dose (Left) and Category (Right) */}
                 <div className="card-body-new">
                     <div className="body-left">
-                        <div className="status-row-single-line">
+                        <div className="status-col">
                             <div className="timer-display" style={{ color: statusColor }}>
                                 {showTimer ? (
                                     <>
@@ -205,11 +205,11 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
                             <div className="next-dose-info">
                                 {showTimer ? `(${availableTime})` : (lastDose && `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })})`)}
                             </div>
-                            <span className={`category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
-                                {medication.category || 'その他'}
-                            </span>
                         </div>
                     </div>
+                    <span className={`category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
+                        {medication.category || 'その他'}
+                    </span>
                 </div>
 
                 {/* Bottom: Buttons (Record & Time Specify & Count) */}
