@@ -337,21 +337,35 @@ h2 {
 }
 
 /* Card Decorations */
-/* Default Theme: Pin Effect */
+/* Default Theme: Pin Effect (Stylish Metallic) */
 .medication-card::before {
   content: '';
   position: absolute;
   top: -8px;
-  /* Adjusted to stick out */
   left: 50%;
   transform: translateX(-50%);
-  width: 16px;
-  height: 16px;
-  background: radial-gradient(circle at 30% 30%, #ff5f5f, #c00000);
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+  /* Metallic/Glassy Sphere Effect */
+  background: radial-gradient(circle at 35% 35%,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(200, 200, 220, 0.8) 20%,
+      rgba(100, 100, 120, 1) 50%,
+      rgba(50, 50, 70, 1) 100%);
+
+  /* Realistic Shadow */
+  box-shadow:
+    inset -2px -2px 4px rgba(0, 0, 0, 0.5),
+    /* Inner shadow for depth */
+    inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+    /* Highlight */
+    1px 2px 4px rgba(0, 0, 0, 0.4);
+  /* Drop shadow */
+
+  border: 1px solid rgba(0, 0, 0, 0.2);
   z-index: 100;
-  /* High z-index */
 }
 
 /* Warm Theme: Masking Tape Effect */
