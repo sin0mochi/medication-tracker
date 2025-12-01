@@ -1,0 +1,11 @@
+# Project Rules
+
+## Environment & Deployment
+- **Production Deployment**: Deployment to the production environment (e.g., Vercel/Netlify) is automatically triggered by pushing changes to the `main` branch on GitHub.
+- **Workflow**: 
+  1. Verify changes locally (`npm run dev`).
+  2. Commit changes.
+  3. Push to `origin main` to deploy.
+
+## Communication
+- **Language**: Always communicate with the user in **Japanese**.
