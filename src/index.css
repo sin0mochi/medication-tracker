@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   /* Default Theme (Dark) */
   --md-sys-color-primary: #BFC6FF;
@@ -178,6 +184,7 @@ body {
   min-height: 100vh;
   background-color: var(--md-sys-color-background);
   transition: background-color 0.3s;
+  overflow-x: hidden;
 }
 
 #root {
