@@ -33,7 +33,9 @@ function App() {
 
   // Theme state
   const [theme, setTheme] = useLocalStorage('app-theme', 'dark'); // 'dark' or 'warm'
-  // const [theme, setTheme] = useState('dark');
+
+  // Layout state
+  const [layoutMode, setLayoutMode] = useLocalStorage('app-layout-mode', 'grid'); // 'grid' or 'list'
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -50,6 +52,14 @@ function App() {
             title="全体の履歴を表示"
           >
             📋
+          </button>
+          <button
+            className="header-icon-btn"
+            onClick={() => setLayoutMode(layoutMode === 'grid' ? 'list' : 'grid')}
+            title={layoutMode === 'grid' ? 'リスト表示に切り替え' : 'グリッド表示に切り替え'}
+            style={{ fontSize: '1.2rem' }}
+          >
+            {layoutMode === 'grid' ? '≡' : '田'}
           </button>
           <button
             className="header-icon-btn"
@@ -71,7 +81,7 @@ function App() {
       </header>
 
       <main>
-        <div className="medication-grid">
+        <div className={`medication-grid ${layoutMode === 'list' ? 'one-column' : ''}`}>
           {medications.map(med => (
             <MedicationCard
               key={med.id}

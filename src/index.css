@@ -240,6 +240,10 @@ h2 {
   width: 100%;
 }
 
+.medication-grid.one-column {
+  grid-template-columns: 1fr;
+}
+
 /* Medication Card (Elevated Card) */
 .medication-card {
   background-color: var(--md-sys-color-surface-container-low);
