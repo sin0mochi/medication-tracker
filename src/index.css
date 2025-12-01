@@ -376,6 +376,31 @@ h2 {
   /* Tape color */
 }
 
+/* Polka Dot Tape */
+[data-theme='warm'] .medication-card.tape-dot::before {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.5) 20%, transparent 20%);
+  background-size: 8px 8px;
+  background-color: rgba(240, 230, 200, 0.6);
+}
+
+/* Check (Gingham) Tape */
+[data-theme='warm'] .medication-card.tape-check::before {
+  background-color: rgba(240, 230, 200, 0.6);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.4) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.4) 2px, transparent 2px);
+  background-size: 10px 10px, 10px 10px;
+}
+
+/* Stripe Tape */
+[data-theme='warm'] .medication-card.tape-stripe::before {
+  background: repeating-linear-gradient(45deg,
+      rgba(240, 230, 200, 0.6),
+      rgba(240, 230, 200, 0.6) 10px,
+      rgba(255, 255, 255, 0.4) 10px,
+      rgba(255, 255, 255, 0.4) 20px);
+}
+
 /* New Layout Styles */
 .card-header-new {
   display: flex;

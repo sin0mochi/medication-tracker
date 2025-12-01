@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import ConfirmModal from './ConfirmModal';
 import TimeRecordModal from './TimeRecordModal';
 import AutoFitText from './AutoFitText';
@@ -161,9 +161,17 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
         showTimer = true;
     }
 
+    // Determine tape pattern (deterministic based on ID)
+    const tapePattern = useMemo(() => {
+        const patterns = ['tape-dot', 'tape-check', 'tape-stripe', '']; // '' for plain
+        if (!medication.id) return '';
+        const hash = medication.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        return patterns[hash % patterns.length];
+    }, [medication.id]);
+
     return (
         <>
-            <div className={`medication-card ${status} ${isOverlapping ? 'category-overlap' : ''}`}>
+            <div className={`medication-card ${status} ${isOverlapping ? 'category-overlap' : ''} ${tapePattern}`}>
                 {/* Header: Name and History/Delete */}
                 <div className="card-header-new">
                     <div className="name-row" style={{ flex: 1, minWidth: 0, marginRight: '0.5rem' }}>
