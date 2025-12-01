@@ -456,7 +456,7 @@ h2 {
 }
 
 .next-dose-info {
-  font-size: 1.0rem;
+  font-size: 0.9rem;
   /* Smaller font for time */
   color: var(--md-sys-color-on-surface-variant);
   white-space: nowrap;
@@ -623,7 +623,7 @@ h2 {
 }
 
 .category-badge {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   padding: 0.2rem 0.5rem;
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
