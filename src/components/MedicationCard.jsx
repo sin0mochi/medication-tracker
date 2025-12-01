@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ConfirmModal from './ConfirmModal';
 import TimeRecordModal from './TimeRecordModal';
+import AutoFitText from './AutoFitText';
 
 export default function MedicationCard({ medication, lastDose, lastCategoryDose, onRecord, onReset, onDelete, onShowHistory }) {
     const [elapsed, setElapsed] = useState('');
@@ -165,8 +166,13 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
             <div className={`medication-card ${status} ${isOverlapping ? 'category-overlap' : ''}`}>
                 {/* Header: Name and History/Delete */}
                 <div className="card-header-new">
-                    <div className="name-row">
-                        <h3>{medication.name}</h3>
+                    <div className="name-row" style={{ flex: 1, minWidth: 0, marginRight: '0.5rem' }}>
+                        <AutoFitText
+                            text={medication.name}
+                            maxFontSize={20}
+                            minFontSize={12}
+                            style={{ color: 'var(--md-sys-color-on-surface)' }}
+                        />
                         {isManual && <span className="manual-badge" title="手動追加">✏️</span>}
                     </div>
                     <button
@@ -186,10 +192,10 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
                             ×
                         </button>
                     )}
-                </div>
+                </div >
 
                 {/* Middle: Timer/Next Dose (Left) and Category (Right) */}
-                <div className="card-body-new">
+                < div className="card-body-new" >
                     <div className="body-left">
                         <div className="status-col">
                             <div className="timer-display" style={{ color: statusColor }}>
@@ -210,10 +216,10 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
                     <span className={`category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
                         {medication.category || 'その他'}
                     </span>
-                </div>
+                </div >
 
                 {/* Bottom: Buttons (Record & Time Specify & Count) */}
-                <div className="card-footer-new">
+                < div className="card-footer-new" >
                     <button
                         className="record-btn-rect"
                         onClick={() => handleRecord()}
@@ -240,8 +246,8 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
                             <span className="count-label">回</span>
                         </button>
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
 
             <ConfirmModal
                 isOpen={showConfirmModal}
