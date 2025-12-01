@@ -443,8 +443,8 @@ h2 {
 }
 
 .status-text-large {
-  font-size: 1.8rem;
-  /* Slightly increased */
+  font-size: 1.4rem;
+  /* Reduced from 1.8rem */
   letter-spacing: 0;
   /* Reset spacing */
   white-space: nowrap;
