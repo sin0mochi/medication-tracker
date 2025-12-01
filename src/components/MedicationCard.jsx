@@ -222,7 +222,7 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
                     <span className={`category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
                         {medication.category || 'その他'}
                     </span>
-                </div> >
+                </div>
 
                 {/* Bottom: Buttons (Record & Time Specify & Count) */}
                 < div className="card-footer-new" >
