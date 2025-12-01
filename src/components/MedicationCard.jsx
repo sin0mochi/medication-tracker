@@ -209,14 +209,20 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
                                 )}
                             </div>
                             <div className="next-dose-info">
-                                {showTimer ? `(${availableTime})` : (lastDose && `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })})`)}
+                                {showTimer ? (
+                                    lastDose ?
+                                        `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} ~ ${availableTime})` :
+                                        `(~ ${availableTime})`
+                                ) : (
+                                    lastDose && `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })})`
+                                )}
                             </div>
                         </div>
                     </div>
                     <span className={`category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
                         {medication.category || 'その他'}
                     </span>
-                </div >
+                </div> >
 
                 {/* Bottom: Buttons (Record & Time Specify & Count) */}
                 < div className="card-footer-new" >

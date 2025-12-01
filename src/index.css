@@ -406,10 +406,10 @@ h2 {
 .card-body-new {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  /* Align items vertically center */
+  align-items: flex-end;
+  /* Align items to bottom */
   margin-bottom: 0.5rem;
-  /* Add small spacing as requested */
+  width: 100%;
 }
 
 .body-left {
@@ -442,7 +442,7 @@ h2 {
 }
 
 .status-text-large {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   /* Large font for "服用可能" */
   letter-spacing: 0;
   white-space: nowrap;
@@ -624,7 +624,7 @@ h2 {
 
 .category-badge {
   font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
+  padding: 0.1rem 0.3rem;
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
   border-radius: 4px;
@@ -635,8 +635,10 @@ h2 {
   text-overflow: ellipsis;
   margin-top: 0;
   max-width: 120px;
-  align-self: center;
-  /* Center vertically in the body */
+  align-self: flex-end;
+  /* Align to bottom to match time */
+  margin-bottom: 2px;
+  /* Slight adjustment to align baseline with text */
 }
 
 /* Header Actions */
