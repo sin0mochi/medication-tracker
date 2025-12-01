@@ -369,18 +369,31 @@ h2 {
   border-right: 2px dotted rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   border-radius: 0;
-  /* Remove rounded corners for torn effect */
   z-index: 100;
-  /* High z-index */
-  /* Remove Pin styles */
-  background: #ffaec9;
-  /* Default fallback (Pink) */
+  background: #f4a460;
+  /* Default */
 }
 
-/* Polka Dot Tape (Pink) */
-[data-theme='warm'] .medication-card.tape-dot::before {
+/* Tape Colors */
+[data-theme='warm'] .medication-card.tape-pink::before {
   background-color: #ffaec9;
-  /* Cute Pink */
+}
+
+[data-theme='warm'] .medication-card.tape-blue::before {
+  background-color: #81D4FA;
+}
+
+[data-theme='warm'] .medication-card.tape-orange::before {
+  background-color: #FFCC80;
+}
+
+[data-theme='warm'] .medication-card.tape-green::before {
+  background-color: #90ee90;
+}
+
+/* Tape Patterns */
+/* Polka Dot */
+[data-theme='warm'] .medication-card.tape-dot::before {
   background-image:
     radial-gradient(#fff 20%, transparent 0),
     radial-gradient(#fff 20%, transparent 0);
@@ -388,20 +401,16 @@ h2 {
   background-size: 15px 15px;
 }
 
-/* Check (Gingham) Tape (Light Blue) */
+/* Check (Gingham) */
 [data-theme='warm'] .medication-card.tape-check::before {
-  background-color: #81D4FA;
-  /* Light Blue */
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.5) 2px, transparent 2px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.5) 2px, transparent 2px);
   background-size: 10px 10px, 10px 10px;
 }
 
-/* Stripe Tape (Apricot/Orange) */
+/* Stripe */
 [data-theme='warm'] .medication-card.tape-stripe::before {
-  background-color: #FFCC80;
-  /* Apricot */
   background-image: repeating-linear-gradient(-45deg,
       rgba(255, 255, 255, 0.5),
       rgba(255, 255, 255, 0.5) 5px,

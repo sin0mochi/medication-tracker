@@ -161,17 +161,24 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
         showTimer = true;
     }
 
-    // Determine tape pattern (deterministic based on ID)
-    const tapePattern = useMemo(() => {
-        const patterns = ['tape-dot', 'tape-check', 'tape-stripe']; // No plain option
-        if (!medication.id) return 'tape-dot';
+    // Determine tape style (deterministic based on ID)
+    const tapeStyle = useMemo(() => {
+        const colors = ['tape-pink', 'tape-blue', 'tape-orange', 'tape-green'];
+        const patterns = ['tape-dot', 'tape-check', 'tape-stripe'];
+
+        if (!medication.id) return 'tape-pink tape-dot';
+
         const hash = medication.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        return patterns[hash % patterns.length];
+
+        const colorIndex = hash % colors.length;
+        const patternIndex = Math.floor(hash / 3) % patterns.length; // Use a different derived number for pattern
+
+        return `${colors[colorIndex]} ${patterns[patternIndex]}`;
     }, [medication.id]);
 
     return (
         <>
-            <div className={`medication-card ${status} ${isOverlapping ? 'category-overlap' : ''} ${tapePattern}`}>
+            <div className={`medication-card ${status} ${isOverlapping ? 'category-overlap' : ''} ${tapeStyle}`}>
                 {/* Header: Name and History/Delete */}
                 <div className="card-header-new">
                     <div className="name-row" style={{ flex: 1, minWidth: 0, marginRight: '0.5rem' }}>
