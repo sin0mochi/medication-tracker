@@ -244,6 +244,81 @@ h2 {
   grid-template-columns: 1fr;
 }
 
+/* 1-Column Layout Optimization */
+.medication-grid.one-column .medication-card {
+  padding: 0.5rem;
+}
+
+.medication-grid.one-column .card-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Category Badge Visibility Control */
+.category-badge-header {
+  display: none;
+  /* Hidden by default (2-column) */
+  margin-right: 0.5rem;
+}
+
+.category-badge-body {
+  display: block;
+  /* Visible by default (2-column) */
+}
+
+.medication-grid.one-column .category-badge-header {
+  display: block;
+  /* Visible in 1-column */
+}
+
+.medication-grid.one-column .category-badge-body {
+  display: none;
+  /* Hidden in 1-column */
+}
+
+/* 1-Column Layout Specifics */
+.medication-grid.one-column .card-header-new {
+  margin-bottom: 0.25rem;
+  justify-content: space-between;
+}
+
+.medication-grid.one-column .card-main-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.medication-grid.one-column .card-body-new {
+  margin-top: 0;
+  padding-top: 0;
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.medication-grid.one-column .card-footer-new {
+  width: auto;
+  margin-top: 0;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+
+.medication-grid.one-column .record-btn-rect,
+.medication-grid.one-column .time-btn-rect-small,
+.medication-grid.one-column .count-btn-rect {
+  height: 2.5rem;
+  /* Even smaller buttons for compact list */
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Hide tape/pin in 1-column mode to save space/clean up */
+/* Tape/pin visible in 1-column mode */
+.medication-grid.one-column .medication-card::before {
+  display: block;
+}
+
 /* Medication Card (Elevated Card) */
 .medication-card {
   background-color: var(--md-sys-color-surface-container-low);
@@ -870,7 +945,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2100;
   padding: 1.5rem;
 }
 
@@ -1290,4 +1365,172 @@ h2 {
 .delete-history-icon-btn:hover {
   background-color: var(--md-sys-color-error-container);
   color: var(--md-sys-color-on-error-container);
+}
+
+/* Settings Menu */
+.settings-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings-menu {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 320px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.settings-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.settings-menu-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.settings-menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-item,
+.settings-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  /* Ensure text is visible in dark mode */
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 12px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.settings-item-row {
+  cursor: default;
+}
+
+.settings-item:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+.toggle-btn {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Header Spacing Adjustment */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+/* Unified Button Heights (Global) */
+.record-btn-rect,
+.time-btn-rect-small,
+.count-btn-rect {
+  height: 3.5rem;
+  /* Unified height for all modes */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 1-Column Layout Refinements */
+.medication-grid.one-column .record-btn-rect {
+  flex-grow: 2;
+  min-width: 100px;
+  border-radius: 8px;
+}
+
+.medication-grid.one-column .footer-right-group {
+  display: flex;
+  gap: 0.25rem;
+  flex-grow: 1;
+}
+
+.medication-grid.one-column .time-btn-rect-small,
+.medication-grid.one-column .count-btn-rect {
+  flex-grow: 1;
+  width: auto;
+  padding: 0 0.5rem;
+  border-radius: 8px;
+}
+
+.medication-grid.one-column .btn-icon {
+  font-size: 1.5rem;
+}
+
+/* Time Display Alignment (1-column) */
+.medication-grid.one-column .status-col {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+/* Long press animation */
+.header-icon-btn {
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.header-icon-btn.is-pressing,
+.delete-history-icon-btn.is-pressing {
+  transform: scale(1.2) rotate(180deg);
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.delete-history-icon-btn {
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.medication-grid.one-column .next-dose-info {
+  font-size: 0.9rem;
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.8;
+}
+
+/* Pencil Icon Alignment */
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  /* Space between name and pencil */
+}
+
+.manual-badge {
+  font-size: 1rem;
+  line-height: 1;
 }

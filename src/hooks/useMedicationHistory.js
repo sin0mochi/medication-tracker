@@ -90,8 +90,8 @@ export function useMedicationHistory() {
         }
     }, [medications, history, setHistory]);
 
-    const addDose = (medicationId) => {
-        const now = new Date().toISOString();
+    const addDose = (medicationId, timestamp = null) => {
+        const now = timestamp ? new Date(timestamp).toISOString() : new Date().toISOString();
         const med = medications.find(m => m.id === medicationId);
         const newEntry = {
             id: Date.now().toString(),
@@ -111,6 +111,17 @@ export function useMedicationHistory() {
 
     const removeDose = (entryId) => {
         setHistory((prevHistory) => prevHistory.filter((entry) => entry.id !== entryId));
+    };
+
+    const updateDose = (entryId, newTimestamp) => {
+        setHistory((prevHistory) => {
+            const updated = prevHistory.map(entry =>
+                entry.id === entryId
+                    ? { ...entry, timestamp: new Date(newTimestamp).toISOString() }
+                    : entry
+            );
+            return updated.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        });
     };
 
     const getLastDose = (medicationId) => {
@@ -159,6 +170,10 @@ export function useMedicationHistory() {
         ));
     };
 
+    const resetAllDoseCounts = () => {
+        setMedications(medications.map(med => ({ ...med, doseCount: 0 })));
+    };
+
     const exportData = () => {
         const data = {
             medications,
@@ -201,7 +216,12 @@ export function useMedicationHistory() {
         const cutoffDate = new Date();
         cutoffDate.setMonth(cutoffDate.getMonth() - monthsToKeep);
 
-        setHistory(prev => prev.filter(entry => new Date(entry.timestamp) >= cutoffDate));
+        const initialCount = history.length;
+        const newHistory = history.filter(entry => new Date(entry.timestamp) >= cutoffDate);
+        const deletedCount = initialCount - newHistory.length;
+
+        setHistory(newHistory);
+        return deletedCount;
     };
 
     return {
@@ -213,12 +233,14 @@ export function useMedicationHistory() {
         setRetentionMonths,
         addDose,
         removeDose,
+        updateDose,
         getLastDose,
         getHistoryForMedication,
         getLastDoseForCategory,
         addMedication,
         removeMedication,
         resetDoseCount,
+        resetAllDoseCounts,
         exportData,
         importData,
         clearOldHistory

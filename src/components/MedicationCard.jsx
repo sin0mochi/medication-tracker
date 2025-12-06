@@ -78,21 +78,33 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
         return () => clearInterval(interval);
     }, [lastDose, medication.intervalHours]);
 
+    // Debug logging
+    useEffect(() => {
+        console.log(`[MedicationCard] ${medication.name}: interval=${medication.intervalHours}, status=${status}, lastDose=${lastDose?.timestamp}`);
+    }, [medication, status, lastDose]);
+
     const handleRecord = (timestamp = null) => {
+        console.log(`[handleRecord] ${medication.name}: timestamp=${timestamp}, lastDose=${lastDose?.timestamp}`);
         // 1. Check if this specific medication is safe to take
-        // If timestamp is provided (manual time entry), we skip the "wait" check relative to NOW,
-        // but ideally we should check relative to the provided time. For simplicity, we'll warn if status is currently wait.
-        // Or if it's a past record, maybe we don't need to warn? Let's keep it simple: warn if currently in wait status.
-        if (status === 'wait' && !timestamp) {
-            setConfirmConfig({
-                title: '強制服用',
-                message: `まだ服用間隔（${medication.intervalHours}時間）が経過していません。\n本当に記録しますか？`,
-                onConfirm: () => onRecord(medication.id, timestamp),
-                isDanger: true,
-                confirmText: '記録する'
-            });
-            setShowConfirmModal(true);
-            return;
+        const recordTime = timestamp ? new Date(timestamp) : new Date();
+
+        if (lastDose) {
+            const lastDoseTime = new Date(lastDose.timestamp);
+            const diffMs = recordTime - lastDoseTime;
+            const intervalMs = medication.intervalHours * 60 * 60 * 1000;
+
+            // Warn if trying to record within the interval period
+            if (diffMs > 0 && diffMs < intervalMs) {
+                setConfirmConfig({
+                    title: '強制服用',
+                    message: `まだ服用間隔（${medication.intervalHours}時間）が経過していません。\n（前回: ${Math.floor(diffMs / (1000 * 60))}分前）\n本当に記録しますか？`,
+                    onConfirm: () => onRecord(medication.id, timestamp),
+                    isDanger: true,
+                    confirmText: '記録する'
+                });
+                setShowConfirmModal(true);
+                return;
+            }
         }
 
         // 2. Check overlap
@@ -150,15 +162,15 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
     let statusColor = 'var(--status-safe)';
     let showTimer = false;
 
-    if (isOverlapping) {
-        displayStatus = 'overlap';
-        statusText = '同類服用中';
-        statusColor = '#F6E05E'; // Match yellow border
-    } else if (status === 'wait') {
+    if (status === 'wait') {
         displayStatus = 'wait';
         statusText = '待機中';
         statusColor = 'var(--status-wait)';
         showTimer = true;
+    } else if (isOverlapping) {
+        displayStatus = 'overlap';
+        statusText = '同類服用中';
+        statusColor = '#F6E05E'; // Match yellow border
     }
 
     // Determine tape style (deterministic based on ID)
@@ -178,97 +190,110 @@ export default function MedicationCard({ medication, lastDose, lastCategoryDose,
 
     return (
         <>
-            <div className={`medication-card ${status} ${isOverlapping ? 'category-overlap' : ''} ${tapeStyle}`}>
-                {/* Header: Name and History/Delete */}
-                <div className="card-header-new">
-                    <div className="name-row" style={{ flex: 1, minWidth: 0, marginRight: '0.5rem' }}>
-                        <AutoFitText
-                            text={medication.name}
-                            maxFontSize={20}
-                            minFontSize={12}
-                            style={{ color: 'var(--md-sys-color-on-surface)' }}
-                        />
-                        {isManual && <span className="manual-badge" title="手動追加">✏️</span>}
-                    </div>
-                    <button
-                        className="icon-btn"
-                        onClick={() => onShowHistory(medication)}
-                        title="履歴"
-                    >
-                        📅
-                    </button>
-                    {!isPreset && (
-                        <button
-                            className="icon-btn delete-btn"
-                            onClick={handleDelete}
-                            title="削除"
-                            style={{ marginLeft: '0.5rem', opacity: 0.5 }}
-                        >
-                            ×
-                        </button>
-                    )}
-                </div >
-
-                {/* Middle: Timer/Next Dose (Left) and Category (Right) */}
-                < div className="card-body-new" >
-                    <div className="body-left">
-                        <div className="status-col">
-                            <div className="timer-display" style={{ color: statusColor }}>
-                                {showTimer ? (
-                                    <>
-                                        <span className="timer-icon">⏳</span>
-                                        <span className="time-remaining">{remainingTime}</span>
-                                    </>
-                                ) : (
-                                    <span className="status-text-large">{statusText}</span>
-                                )}
+            <div className={`medication-card ${status} ${isOverlapping && status !== 'wait' ? 'category-overlap' : ''} ${tapeStyle}`}>
+                <div className="card-content-wrapper">
+                    {/* Header: Name and History/Delete */}
+                    <div className="card-header-new">
+                        <div className="name-row" style={{ flex: 1, minWidth: 0, marginRight: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <div style={{ flex: '0 1 auto', minWidth: 0 }}>
+                                <AutoFitText
+                                    text={medication.name}
+                                    maxFontSize={20}
+                                    minFontSize={12}
+                                    style={{ color: 'var(--md-sys-color-on-surface)' }}
+                                />
                             </div>
-                            <div className="next-dose-info">
-                                {showTimer ? (
-                                    lastDose ?
-                                        `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} ~ ${availableTime})` :
-                                        `(~ ${availableTime})`
-                                ) : (
-                                    lastDose && `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })})`
-                                )}
+                            {isManual && <span className="manual-badge" title="手動追加" style={{ flexShrink: 0 }}>✏️</span>}
+                        </div>
+
+                        {/* Category Badge (Header - Visible in 1-column) */}
+                        <span className={`category-badge-header category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
+                            {medication.category || 'その他'}
+                        </span>
+
+                        <button
+                            className="icon-btn"
+                            onClick={() => onShowHistory(medication)}
+                            title="履歴"
+                        >
+                            📅
+                        </button>
+                        {!isPreset && (
+                            <button
+                                className="icon-btn delete-btn"
+                                onClick={handleDelete}
+                                title="削除"
+                                style={{ marginLeft: '0.5rem', opacity: 0.5 }}
+                            >
+                                ×
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Main Content Wrapper (Body + Footer) */}
+                    <div className="card-main-content">
+                        {/* Middle: Timer/Next Dose (Left) and Category (Right - Visible in 2-column) */}
+                        <div className="card-body-new">
+                            <div className="body-left">
+                                <div className="status-col">
+                                    <div className="timer-display" style={{ color: statusColor }}>
+                                        {showTimer ? (
+                                            <>
+                                                <span className="timer-icon">⏳</span>
+                                                <span className="time-remaining">{remainingTime}</span>
+                                            </>
+                                        ) : (
+                                            <span className="status-text-large">{statusText}</span>
+                                        )}
+                                    </div>
+                                    <div className="next-dose-info">
+                                        {showTimer ? (
+                                            lastDose ?
+                                                `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })} ~ ${availableTime})` :
+                                                `(~ ${availableTime})`
+                                        ) : (
+                                            lastDose && `(${new Date(lastDose.timestamp).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })})`
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            {/* Category Badge (Body - Visible in 2-column) */}
+                            <span className={`category-badge-body category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
+                                {medication.category || 'その他'}
+                            </span>
+                        </div>
+
+                        {/* Bottom: Buttons (Record & Time Specify & Count) */}
+                        <div className="card-footer-new">
+                            <button
+                                className="record-btn-rect"
+                                onClick={() => handleRecord()}
+                                title={status === 'wait' ? '強制服用' : '服用'}
+                            >
+                                <span className="btn-icon">💊</span>
+                            </button>
+
+                            <div className="footer-right-group">
+                                <button
+                                    className="time-btn-rect-small"
+                                    onClick={() => setShowTimeModal(true)}
+                                    title="時間を指定して記録"
+                                >
+                                    <span className="btn-icon">🕒</span>
+                                </button>
+                                <button
+                                    className="count-btn-rect"
+                                    onClick={handleReset}
+                                    title="回数をリセット"
+                                >
+                                    <span className="count-number">{medication.doseCount || 0}</span>
+                                    <span className="count-label">回</span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <span className={`category-badge category-${medication.category ? medication.category.replace(/\s+/g, '-') : 'other'}`}>
-                        {medication.category || 'その他'}
-                    </span>
                 </div>
-
-                {/* Bottom: Buttons (Record & Time Specify & Count) */}
-                < div className="card-footer-new" >
-                    <button
-                        className="record-btn-rect"
-                        onClick={() => handleRecord()}
-                        title={status === 'wait' ? '強制服用' : '服用'}
-                        disabled={status === 'wait'}
-                    >
-                        <span className="btn-icon">💊</span>
-                    </button>
-
-                    <div className="footer-right-group">
-                        <button
-                            className="time-btn-rect-small"
-                            onClick={() => setShowTimeModal(true)}
-                            title="時間を指定して記録"
-                        >
-                            <span className="btn-icon">🕒</span>
-                        </button>
-                        <button
-                            className="count-btn-rect"
-                            onClick={handleReset}
-                            title="回数をリセット"
-                        >
-                            <span className="count-number">{medication.doseCount || 0}</span>
-                            <span className="count-label">回</span>
-                        </button>
-                    </div>
-                </div >
-            </div >
+            </div>
 
             <ConfirmModal
                 isOpen={showConfirmModal}
